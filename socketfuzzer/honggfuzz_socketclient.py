@@ -18,13 +18,13 @@ class HonggfuzzSocket:
 
         server_address = "/tmp/honggfuzz_socket"
         if self.pid is not None:
-            server_address += "." + str(self.pid)
-        print( 'connecting to %s' % server_address)
+            server_address += f".{str(self.pid)}"
+        print(f'connecting to {server_address}')
 
         try:
             self.sock.connect(server_address)
         except socket.error as msg:
-            print ("Error connecting to honggfuzz socket: " + str(msg))
+            print(f"Error connecting to honggfuzz socket: {str(msg)}")
             sys.exit(1)
 
 
@@ -68,7 +68,7 @@ class TargetSocket:
         isOpen = False
 
         n = 0
-        while isOpen is False:
+        while not isOpen:
             try:
                 s.connect((host, port))
                 isOpen = True
@@ -83,7 +83,7 @@ class TargetSocket:
         try:
             s.send( str.encode(data) )
         except Exception as e:
-            print( "B: " + str(e))
+            print(f"B: {str(e)}")
 
         s.close()
         return True
@@ -93,21 +93,21 @@ class TargetSocket:
         data = ""
         if n == 1:
             data = "AAAAAA"
-        if n == 2:
+        elif n == 2:
             data = "BBBBBB"
-        if n == 3:
+        elif n == 3:
             data = "CCCCCC"
-        if n == 4:
+        elif n == 4:
             data = "DDDDDD"
-        if n == 5:
+        elif n == 5:
             data = "EEEEEE"
-        if n == 6:
+        elif n == 6:
             # stack buffer overflow
             data = "B" * 128
-        if n == 7:
+        elif n == 7:
             # heap buffer overflow
             data = "C" * 128
-        if n == 8:
+        elif n == 8:
             # heap buffer overflow
             data = "FFFFFF"
 
